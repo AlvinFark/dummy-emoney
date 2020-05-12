@@ -1,6 +1,5 @@
 package com.dummy.emoney;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +13,12 @@ import java.util.List;
 @RequestMapping("/api/card")
 public class CardController {
 
-  CardMapper cardMapper;
+  @Autowired
+  CardRepository cardRepository;
 
   @GetMapping
   public ResponseEntity<?> getAll(){
-    List<Card> cards = cardMapper.getAll();
+    List<Card> cards = cardRepository.findAll();
     return new ResponseEntity<>(cards, HttpStatus.OK);
   }
 }
