@@ -38,4 +38,16 @@ public class CardController {
     Card card = new Card(number,0);
     return new ResponseEntity<>(cardRepository.save(card), HttpStatus.OK);
   }
+
+  @PostMapping("/top-up")
+  public ResponseEntity<?> topup(@RequestBody TopUpRequest topUpRequest){
+    Boolean exist = cardRepository.existsByNumber(topUpRequest.getNumber());
+    if (!exist) {
+      return new ResponseEntity<>("card not found", HttpStatus.NOT_FOUND);
+    }
+    Card card = cardRepository.getByNumber(topUpRequest.getNumber());
+    card.setBalance(card.getBalance()+topUpRequest.getValue());
+    cardRepository.save(card);
+    return new ResponseEntity<>("success", HttpStatus.OK);
+  }
 }
