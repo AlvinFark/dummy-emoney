@@ -28,4 +28,14 @@ public class CardController {
     }
     return new ResponseEntity<>(true, HttpStatus.OK);
   }
+
+  @PostMapping("/{number}")
+  public ResponseEntity<?> insert(@PathVariable String number){
+    Boolean exist = cardRepository.existsByNumber(number);
+    if (exist) {
+      return new ResponseEntity<>("already exist", HttpStatus.CONFLICT);
+    }
+    Card card = new Card(number,0);
+    return new ResponseEntity<>(cardRepository.save(card), HttpStatus.OK);
+  }
 }
