@@ -43,7 +43,7 @@ public class CardController {
   public ResponseEntity<?> topup(@RequestBody TopUpRequest topUpRequest){
     Boolean exist = cardRepository.existsByNumber(topUpRequest.getNumber());
     if (!exist) {
-      return new ResponseEntity<>("card not found", HttpStatus.NOT_FOUND);
+      cardRepository.save(new Card(topUpRequest.getNumber(), topUpRequest.getValue()));
     }
     Card card = cardRepository.getByNumber(topUpRequest.getNumber());
     card.setBalance(card.getBalance()+topUpRequest.getValue());
